@@ -1,0 +1,33 @@
+{
+  "extends": [
+    "tslint-microsoft-contrib"
+  ],
+  "rules": {
+    "no-unsafe-any": false,
+    "strict-boolean-expressions": false,
+    "missing-jsdoc": false,
+    "trailing-comma": [true],
+    "typedef": [
+      "arrow-parameter",
+      "variable-declaration",
+      "parameter",
+      "property-declaration"
+    ],
+    "variable-name": [
+      "check-format"
+    ],
+    "quotemark": [
+      "jsx-double",
+      "single"
+    ],
+    "interface-name": [
+      "never-prefix"
+    ],
+    // Required so that React Styleguidist works
+    "no-default-export": false,
+
+    // microsoft-tslint-contrib
+    "no-single-line-block-comment": false,
+    "react-unused-props-and-state": false
+  }
+}

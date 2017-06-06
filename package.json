@@ -1,0 +1,38 @@
+{
+  "name": "react-docgen-typescript-example",
+  "version": "0.0.1",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "tsc": "tsc",
+    "styleguidist": "styleguidist",
+    "start": "tsc && styleguidist server --config styleguide.config.js",
+    "webpack": "webpack"
+  },
+  "lint-staged": {
+    "src/**/*.{j,t}s{x,}": "prettier --write --single-quote --trailing-comma all"
+  },
+  "pre-commit": [
+    "lint-staged"
+  ],
+  "author": "Muhammad Fawwaz Orabi <mfawwaz93@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@types/react": "^15.0.25",
+    "@types/react-dom": "^15.5.0",
+    "lint-staged": "^3.6.0",
+    "pre-commit": "^1.2.2",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "tslint": "^5.4.2",
+    "tslint-microsoft-contrib": "^5.0.0"
+  },
+  "devDependencies": {
+    "react-docgen-typescript": "^0.0.11",
+    "react-styleguidist": "^5.2.1",
+    "ts-loader": "^2.1.0",
+    "tslint-language-service": "^0.9.6",
+    "typescript": "^2.3.3",
+    "webpack": "^2.6.1"
+  }
+}

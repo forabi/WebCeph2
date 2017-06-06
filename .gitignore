@@ -1,0 +1,6 @@
+node_modules
+*.log
+tmp
+.vscode/*.db*
+build
+coverage
