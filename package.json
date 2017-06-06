@@ -7,7 +7,8 @@
     "tsc": "tsc",
     "styleguidist": "styleguidist",
     "start": "tsc && styleguidist server --config styleguide.config.js",
-    "webpack": "webpack"
+    "webpack": "webpack",
+    "lint-staged": "lint-staged"
   },
   "lint-staged": {
     "src/**/*.{j,t}s{x,}": "prettier --write --single-quote --trailing-comma all"
