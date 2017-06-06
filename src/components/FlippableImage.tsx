@@ -8,14 +8,10 @@ export interface Props extends React.HTMLAttributes<HTMLImageElement> {
 }
 
 /** An enhanced image component */
-export const FlippableImage: React.StatelessComponent<Props> = (props: Props) => {
-  const {
-    src,
-    isFlippedX,
-    isFlippedY,
-    style,
-    ...rest,
-  } = props;
+export const FlippableImage: React.StatelessComponent<Props> = (
+  props: Props,
+) => {
+  const { src, isFlippedX, isFlippedY, style, ...rest } = props;
 
   let transform = '';
   if (isFlippedX === true) {
@@ -28,11 +24,7 @@ export const FlippableImage: React.StatelessComponent<Props> = (props: Props) =>
   const d = <img src="fasdf" />;
 
   return (
-    <img
-      src={ src || undefined }
-      style={ { ...style, transform } }
-      {...rest}
-    />
+    <img src={src || undefined} style={{ ...style, transform }} {...rest} />
   );
 };
 

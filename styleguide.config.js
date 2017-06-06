@@ -4,7 +4,7 @@ const glob = require('glob');
 module.exports = {
   title: 'WebCeph Style Guide',
   components: function () {
-    return glob.sync(path.resolve(__dirname, 'components/**/*.tsx'))
+    return glob.sync(path.resolve(__dirname, 'src/components/**/*.tsx'))
       .filter(function (module) {
         return /\/[A-Z]\w*\.tsx$/.test(module);
       });

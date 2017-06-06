@@ -28,6 +28,7 @@
 
     // microsoft-tslint-contrib
     "no-single-line-block-comment": false,
-    "react-unused-props-and-state": false
+    "react-unused-props-and-state": false,
+    "react-tsx-curly-spacing": false
   }
 }
