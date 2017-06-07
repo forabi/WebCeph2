@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as cx from 'classnames';
 import round from 'lodash/round';
+import clamp from 'lodash/clamp';
 import {
   applyToPoint,
   inverse,
@@ -94,8 +95,8 @@ export class Zoomable extends React.PureComponent<Props, State> {
     // The mouse coordinates do not include the translation of the element,
     // so we reapply the translation manually.
     const matrix = this.state.matrix;
-    const x = ev.clientX - left;
-    const y = ev.clientY - top;
+    const x = clamp(ev.clientX - left, 0, left);
+    const y = clamp(ev.clientY - top, 0, top);
     // Now we have the mouse position applied correctly to the transormation
     // matrix, we inverse the matrix to get the original point on the element
     // with no transformations applied.

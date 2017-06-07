@@ -35,10 +35,9 @@ This is another stateful zoomable component, wrapped in a scrollable container w
 ```
 <div style={{ overflow: 'auto', height: 300, width: 400, display: 'flex', alignItems: 'center', justifyContent: 'center', direction: 'rtl' }}>
   <UncontrolledZoomable minScale={1} maxScale={Infinity}>
-    <img
-      style={{ height: 250 }} 
-      src="https://upload.wikimedia.org/wikipedia/commons/6/66/Cephalometric_radiograph.JPG"
-    />
+    <div>
+      نص باللغة العربية
+    </div>
   </UncontrolledZoomable>
 </div>
 ```
