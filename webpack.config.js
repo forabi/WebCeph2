@@ -12,13 +12,37 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        loader: 'ts-loader',
+        test: /\.css$/,
         exclude: /node_modules/,
+        use: [
+          'style-loader',
+          {
+            loader: 'typings-for-css-modules-loader',
+            options: {
+              namedExport: true,
+              module: true,
+              localIdentName: '[name]_[local]_[hash:base64:5]',
+            },
+          },
+        ],
+      },
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        loader: 'ts-loader',
+        options: {
+          compilerOptions: {
+            module: 'es2015'
+          }
+        },
       },
     ],
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
+    modules: [
+      path.join(__dirname, 'src'),
+      'node_modules',
+    ],
   },
 };
