@@ -1,11 +1,11 @@
-This is a cephalometric image component:
+This is a flippable image component:
 
     <FlippableImage
       style={{ height: 250 }} 
       src="https://upload.wikimedia.org/wikipedia/commons/6/66/Cephalometric_radiograph.JPG" 
     />
 
-This is one is flipped horizontally:
+This one is flipped horizontally:
 
     <FlippableImage
       style={{ height: 250 }}
@@ -13,7 +13,7 @@ This is one is flipped horizontally:
       src="https://upload.wikimedia.org/wikipedia/commons/6/66/Cephalometric_radiograph.JPG" 
     />
 
-This is one is flipped vertically:
+This one is flipped vertically:
 
     <FlippableImage
       style={{ height: 250 }}
@@ -21,7 +21,7 @@ This is one is flipped vertically:
       src="https://upload.wikimedia.org/wikipedia/commons/6/66/Cephalometric_radiograph.JPG" 
     />
 
-This is one is flipped horizontally and vertically:
+This one is flipped horizontally and vertically:
 
     <FlippableImage
       style={{ height: 250 }}

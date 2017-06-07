@@ -3,24 +3,22 @@ This is a controlled zoomable component, the `onZoom` handler dispatches zoom ch
 ```
 initialState = { scaleFactor: 1, originX: 0, originY: 0 };
 
-<div>
-  <Zoomable
-    {...state}
-    onZoom={(scaleFactor, originX, originY) => setState({ scaleFactor, originX, originY })}
+<Zoomable
+  {...state}
+  onZoom={(scaleFactor, originX, originY) => setState({ scaleFactor, originX, originY })}
+>
+  <div
+    style={{
+      width: 200,
+      height: 200,
+      background: 'lightblue',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}
   >
-    <div
-      style={{
-        width: 200,
-        height: 200,
-        background: 'lightblue',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      {state.scaleFactor} ({Math.round(state.originX)}, {Math.round(state.originY)})
-    </div>
-  </Zoomable>
-</div>
+    {state.scaleFactor}x ({Math.round(state.originX)}, {Math.round(state.originY)})
+  </div>
+</Zoomable>
 
 ```
