@@ -13,15 +13,13 @@ export const FlippableImage: React.StatelessComponent<Props> = (
 ) => {
   const { src, isFlippedX, isFlippedY, style, ...rest } = props;
 
-  let transform = '';  
+  let transform = '';
   if (isFlippedX === true) {
     transform += ' scale(-1, 1)';
   }
   if (isFlippedY === true) {
     transform += ' scale(1, -1)';
   }
-
-  const d = <img src="fasdf" />;
 
   return (
     <img src={src || undefined} style={{ ...style, transform }} {...rest} />
@@ -30,7 +28,7 @@ export const FlippableImage: React.StatelessComponent<Props> = (
 
 FlippableImage.defaultProps = {
   isFlippedX: false,
-  isFlippedY: true,
+  isFlippedY: false,
 };
 
 export default FlippableImage;
