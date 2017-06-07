@@ -1,7 +1,14 @@
 {
   "compilerOptions": {
-    "module": "es2015",
+    "module": "commonjs",
     "target": "es2015",
+    "noEmitOnError": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitThis": true,
+    "allowJs": true,
+    "checkJs": false,
+    "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "outDir": "lib",
     "jsx": "react",
@@ -10,6 +17,13 @@
       {
         "name": "tslint-language-service"
       }
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "*",
+        "src/*"
+      ]
+    }
   }
 }
