@@ -11,7 +11,7 @@ import {
   translate,
 } from 'transformation-matrix';
 
-import * as classNames from './Zoomable.css';
+import * as classNames from './Zoomable.module.css';
 
 type Coords = { x: number; y: number };
 
