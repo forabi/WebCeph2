@@ -4,6 +4,7 @@
 
 .zoomable {
   --transition-time: 0.1s;
+
   transform-origin: top left;
   transition: transform var(--transition-time, 0.1s) ease-in-out;
   /* stylelint-disable plugin/no-unsupported-browser-features */
