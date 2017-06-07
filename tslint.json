@@ -17,16 +17,20 @@
       "check-format"
     ],
     "quotemark": [
-      "jsx-double",
-      "single"
+      "single",
+      "jsx-double"
     ],
     "interface-name": [
       "never-prefix"
     ],
+    "member-access": false,
+    "ordered-imports": false,
+    "no-relative-imports": false,
     // Required so that React Styleguidist works
     "no-default-export": false,
 
     // microsoft-tslint-contrib
+    "restrict-plus-operand": false,
     "no-single-line-block-comment": false,
     "react-unused-props-and-state": false,
     "react-tsx-curly-spacing": false
