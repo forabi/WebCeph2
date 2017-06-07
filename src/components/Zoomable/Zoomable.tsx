@@ -10,10 +10,9 @@ import {
   translate,
 } from 'transformation-matrix';
 
-
 import * as classNames from './Zoomable.css';
 
-type Coords = { x: number, y: number };
+type Coords = { x: number; y: number };
 
 export interface Props extends React.HTMLAttributes<HTMLDivElement> {
   /**
@@ -35,7 +34,11 @@ export interface Props extends React.HTMLAttributes<HTMLDivElement> {
    * The zoom change handler for controlled components.
    * It should update the other props in order to reflect the zoom change.
    */
-  onZoom(scale: number, translateX: number, translateY: number): void;
+  onZoom(
+    scale: number,
+    translateX: number,
+    translateY: number,
+  ): void;
 }
 
 interface State {
@@ -67,7 +70,7 @@ export class Zoomable extends React.PureComponent<Props, State> {
   };
 
   viewer: HTMLDivElement;
-  setViewer = (node: HTMLDivElement) => this.viewer = node;
+  setViewer = (node: HTMLDivElement) => (this.viewer = node);
 
   applyZoom(f: number, e: React.MouseEvent<HTMLDivElement>) {
     e.stopPropagation();
@@ -79,10 +82,6 @@ export class Zoomable extends React.PureComponent<Props, State> {
       this.props.onZoom(newScaleFactor, mouseX, mouseY);
       e.preventDefault();
     }
-  }
-
-  applyPan() {
-    // @TODO
   }
 
   /**
@@ -106,17 +105,17 @@ export class Zoomable extends React.PureComponent<Props, State> {
   }
 
   handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    this.applyZoom(e.button === 2 ? 0.9 :  1.1, e);
-  }
+    this.applyZoom(e.button === 2 ? 0.9 : 1.1, e);
+  };
 
   handleMouseWheel = (e: React.WheelEvent<HTMLDivElement>) => {
     const delta = e.deltaY;
     this.applyZoom(delta > 0 ? 0.9 : 1.1, e);
-  }
+  };
 
   handleContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
-  }
+  };
 
   componentWillReceiveProps(newProps: Props) {
     this.setState({
@@ -126,17 +125,18 @@ export class Zoomable extends React.PureComponent<Props, State> {
 
   render() {
     const {
-      style, className,
-      children, scaleFactor,
-      onZoom, originX, originY,
+      style,
+      className,
+      children,
+      scaleFactor,
+      onZoom,
+      originX,
+      originY,
       ...rest,
     } = this.props;
 
     return (
-      <div
-        ref={this.setViewer}
-        className={cx(classNames.viewer, className)}
-      >
+      <div ref={this.setViewer} className={cx(classNames.viewer, className)}>
         <div
           {...rest}
           onContextMenu={this.handleContextMenu}

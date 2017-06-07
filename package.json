@@ -11,6 +11,7 @@
   },
   "lint-staged": {
     "src/**/*.{j,t}s{x,}": "prettier --write --single-quote --trailing-comma all",
+    "src/**/*.ts{,x}": "tslint",
     "src/**/*.{s,}css": "stylelint"
   },
   "pre-commit": [
@@ -43,6 +44,7 @@
   },
   "devDependencies": {
     "css-loader": "^0.28.4",
+    "prettier": "^1.4.2",
     "react-docgen-typescript": "^0.0.11",
     "react-styleguidist": "^5.2.1",
     "style-loader": "^0.18.2",
