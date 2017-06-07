@@ -1,0 +1,6 @@
+{
+  "rules": {
+    "export-name": false,
+    "misnamed-import": false
+  }
+}
