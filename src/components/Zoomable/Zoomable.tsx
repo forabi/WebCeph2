@@ -79,7 +79,7 @@ export class Zoomable extends React.PureComponent<Props, State> {
     const { scaleFactor, minScale, maxScale } = this.props;
     const newScaleFactor = round(scaleFactor * f, 1);
     // tslint:disable-next-line no-non-null-assertion
-    if (newScaleFactor > minScale! && newScaleFactor < maxScale!) {
+    if (newScaleFactor >= minScale! && newScaleFactor <= maxScale!) {
       this.props.onZoom(newScaleFactor, mouseX, mouseY);
       e.preventDefault();
     }
@@ -131,6 +131,8 @@ export class Zoomable extends React.PureComponent<Props, State> {
       children,
       scaleFactor,
       onZoom,
+      minScale,
+      maxScale,
       originX,
       originY,
       ...rest,

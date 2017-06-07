@@ -1,18 +1,26 @@
-This is a controlled zoomable component, the onZoom handler outputs to console, the state of the component should be handled somewhere else:
+This is a controlled zoomable component, the `onZoom` handler dispatches zoom changes so that the changes are handled outside the component:
 
 ```
-<Zoomable>
-  <div
-    style={{
-      width: 200,
-      height: 200,
-      background: 'lightblue',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}
+initialState = { scaleFactor: 1, originX: 0, originY: 0 };
+
+<div>
+  <Zoomable
+    {...state}
+    onZoom={(scaleFactor, originX, originY) => setState({ scaleFactor, originX, originY })}
   >
-    TEXT
-  </div>
-</Zoomable>
+    <div
+      style={{
+        width: 200,
+        height: 200,
+        background: 'lightblue',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      {state.scaleFactor} ({Math.round(state.originX)}, {Math.round(state.originY)})
+    </div>
+  </Zoomable>
+</div>
+
 ```
