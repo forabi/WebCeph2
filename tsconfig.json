@@ -1,17 +1,19 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es2015",
+    "target": "esnext",
     "noEmitOnError": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitThis": true,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
     "allowJs": true,
-    "checkJs": false,
+    "checkJs": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "outDir": "lib",
-    "jsx": "react",
+    "jsx": "preserve",
     "strict": true,
     "plugins": [
       {

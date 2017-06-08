@@ -29,6 +29,7 @@
     "semicolon": [
       "ignore-bound-class-methods"
     ],
+    "import-name": false,
     // Required so that React Styleguidist works
     "no-default-export": false,
 
