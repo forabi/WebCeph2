@@ -3,9 +3,10 @@ const glob = require('glob');
 
 module.exports = {
   title: 'WebCeph Style Guide',
-  components: function () {
-    return glob.sync(path.resolve(__dirname, 'src/components/**/*.tsx'))
-      .filter(function (module) {
+  components() {
+    return glob
+      .sync(path.resolve(__dirname, 'src/components/**/*.tsx'))
+      .filter(module => {
         return /\/[A-Z]\w*\.tsx$/.test(module);
       });
   },
