@@ -7,12 +7,14 @@
     "styleguidist": "styleguidist",
     "start": "styleguidist server --config styleguide.config.js",
     "webpack": "webpack",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "lint-staged": {
-    "src/**/*.{j,t}s{x,}": "prettier --write --single-quote --trailing-comma all",
-    "src/**/*.ts{,x}": "tslint",
-    "src/**/*.{s,}css": "stylelint"
+    "{.,{src,stories}/**}/*.{j,t}s{x,}": "prettier --write --single-quote --trailing-comma all",
+    "{.,{src,stories}/**}/**/*.ts{,x}": "tslint",
+    "{.,{src,stories}/**}/**/*.{s,}css": "stylelint"
   },
   "pre-commit": [
     "lint-staged"
@@ -27,6 +29,7 @@
   "author": "Muhammad Fawwaz Orabi <mfawwaz93@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@storybook/addon-actions": "^3.0.1",
     "@types/classnames": "^2.2.0",
     "@types/lodash": "^4.14.65",
     "@types/react": "^15.0.25",
@@ -44,6 +47,7 @@
     "tslint-microsoft-contrib": "^5.0.0"
   },
   "devDependencies": {
+    "@storybook/react": "^3.0.1",
     "babel-loader": "^7.0.0",
     "babel-polyfill": "^6.23.0",
     "babel-preset-env": "^1.5.2",

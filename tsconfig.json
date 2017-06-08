@@ -13,7 +13,7 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "outDir": "lib",
-    "jsx": "preserve",
+    "jsx": "react",
     "strict": true,
     "plugins": [
       {
