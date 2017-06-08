@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { Zoomable, Props } from 'components/Zoomable/Zoomable';
+import { Zoomable, Props as AllProps } from 'components/Zoomable/Zoomable';
+
+type Props = Pick<AllProps, 'minScale' | 'maxScale'>;
+type State = Pick<AllProps, 'scaleFactor' | 'originX' | 'originY'>;
 
 export { Props };
-
-type State = Pick<Props, 'scaleFactor' | 'originX' | 'originY'>;
 
 /**
  * A stateful `Zoomable` instance, the `onZoom` is handled internally.
@@ -15,9 +16,9 @@ export class UncontrolledZoomable extends React.Component<Props, State> {
     originY: 0,
   };
 
-  handleOnZoom: Props['onZoom'] = (scaleFactor, originX, originY) => {
+  handleOnZoom: AllProps['onZoom'] = (scaleFactor, originX, originY) => {
     this.setState({ scaleFactor, originX, originY });
-  }
+  };
 
   render() {
     return (
