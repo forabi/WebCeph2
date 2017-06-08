@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as cx from 'classnames';
+import * as bindClassnames from 'classnames/bind';
 import round from 'lodash/round';
 import clamp from 'lodash/clamp';
 import {
@@ -13,9 +14,11 @@ import {
 
 import * as classNames from './Zoomable.module.css';
 
+const cxm = bindClassnames.bind(classNames);
+
 type Coords = { x: number; y: number };
 
-export interface Props extends React.HTMLAttributes<HTMLDivElement> {
+export interface Props extends React.HTMLAttributes<Element> {
   /**
    * The x-axis value of the zoom origin, which corresponds to the mouse pointer
    * location relative to the wrapped element without the zoom applied
@@ -44,6 +47,8 @@ export interface Props extends React.HTMLAttributes<HTMLDivElement> {
 
 interface State {
   matrix: Matrix;
+  canZoomIn: boolean;
+  canZoomOut: boolean;
 }
 
 function getMatrixFromProps({ originX, originY, scaleFactor }: Props): Matrix {
@@ -52,6 +57,14 @@ function getMatrixFromProps({ originX, originY, scaleFactor }: Props): Matrix {
     scale(scaleFactor, scaleFactor),
     translate(-originX, -originY),
   );
+}
+
+function getCanZoomIn({ maxScale = Infinity, scaleFactor }: Props): boolean {
+  return scaleFactor < maxScale;
+}
+
+function getCanZoomOut({ minScale = Infinity, scaleFactor }: Props): boolean {
+  return scaleFactor > minScale;
 }
 
 /** A Zoomable component wraps any DOM element and provides mouse-based
@@ -68,18 +81,17 @@ export class Zoomable extends React.PureComponent<Props, State> {
 
   state: State = {
     matrix: getMatrixFromProps(this.props),
+    canZoomIn: getCanZoomIn(this.props),
+    canZoomOut: getCanZoomOut(this.props),
   };
 
-  viewer: HTMLDivElement;
-  setViewer = (node: HTMLDivElement) => (this.viewer = node);
+  viewer: Element;
+  setViewer = (node: Element) => (this.viewer = node);
 
-  applyZoom(f: number, e: React.MouseEvent<HTMLDivElement>) {
-    e.stopPropagation();
+  applyZoom(f: number, e: React.MouseEvent<Element>) {
     const { x: mouseX, y: mouseY }: Coords = this.getMouseCoords(e);
-    const { scaleFactor, minScale, maxScale } = this.props;
-    const newScaleFactor = round(scaleFactor * f, 1);
-    // tslint:disable-next-line no-non-null-assertion
-    if (newScaleFactor >= minScale! && newScaleFactor <= maxScale!) {
+    if (this.state.canZoomIn && f > 1 || this.state.canZoomOut && f < 1) {
+      const newScaleFactor = round(this.props.scaleFactor * f, 1);
       this.props.onZoom(newScaleFactor, mouseX, mouseY);
       e.preventDefault();
     }
@@ -90,7 +102,7 @@ export class Zoomable extends React.PureComponent<Props, State> {
    * as if the coordinates were on the element without the transformations
    * applied to it.
    */
-  getMouseCoords(ev: React.MouseEvent<HTMLDivElement>) {
+  getMouseCoords(ev: React.MouseEvent<Element>) {
     const { top, left } = this.viewer.getBoundingClientRect();
     // The mouse coordinates do not include the translation of the element,
     // so we reapply the translation manually.
@@ -105,22 +117,24 @@ export class Zoomable extends React.PureComponent<Props, State> {
     return applyToPoint(inverseMatrix, { x, y });
   }
 
-  handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+  handleMouseDown = (e: React.MouseEvent<Element>) => {
     this.applyZoom(e.button === 2 ? 0.9 : 1.1, e);
   };
 
-  handleMouseWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+  handleMouseWheel = (e: React.WheelEvent<Element>) => {
     const delta = e.deltaY;
     this.applyZoom(delta > 0 ? 0.9 : 1.1, e);
   };
 
-  handleContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
+  handleContextMenu = (e: React.MouseEvent<Element>) => {
     e.preventDefault();
   };
 
   componentWillReceiveProps(newProps: Props) {
     this.setState({
       matrix: getMatrixFromProps(newProps),
+      canZoomIn: getCanZoomIn(newProps),
+      canZoomOut: getCanZoomOut(newProps),
     });
   }
 
@@ -137,6 +151,7 @@ export class Zoomable extends React.PureComponent<Props, State> {
       originY,
       ...rest,
     } = this.props;
+    const { canZoomIn, canZoomOut } = this.state;
 
     return (
       <div ref={this.setViewer} className={cx(classNames.viewer, className)}>
@@ -145,8 +160,8 @@ export class Zoomable extends React.PureComponent<Props, State> {
           onContextMenu={this.handleContextMenu}
           onMouseDown={this.handleMouseDown}
           onWheel={this.handleMouseWheel}
+          className={cxm('zoomable', { canZoomIn, canZoomOut })}
           role="presentation"
-          className={classNames.zoomable}
           style={{
             ...style,
             transform: toCSS(this.state.matrix),

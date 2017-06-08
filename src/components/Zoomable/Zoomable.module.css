@@ -7,6 +7,20 @@
 
   transform-origin: top left;
   transition: transform var(--transition-time, 0.1s) ease-in-out;
-  /* stylelint-disable plugin/no-unsupported-browser-features */
+}
+
+.zoomable.canZoomOut {
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+  cursor: zoom-out;
+}
+
+.zoomable.canZoomIn {
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   cursor: zoom-in;
+}
+
+.zoomable.canZoomOut.canZoomIn {
+  /* @TODO */
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+  cursor: url();
 }
