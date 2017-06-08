@@ -4,10 +4,10 @@ declare module 'react-loadable' {
     error: Error | null;
     pastDelay: boolean;
   };
-  type Factory<P> = (props: P) => React.ReactElement<P>;
+  type Factory<P> = React.ComponentClass<P> | React.StatelessComponent<P>;
 
   export type LoadableConfig<P> = {
-    loader: <P, S>() => PromiseLike<React.Component<P, S>>;
+    loader<P>(): PromiseLike<Factory<P> | { default: Factory<P> }>;
     LoadingComponent: Factory<LoadingProps>;
     delay?: number;
   };
@@ -15,6 +15,6 @@ declare module 'react-loadable' {
     preload(): void;
   };
   export type LoadbleFactory = <P>(config: LoadableConfig<P>) => Loadable<P>;
-  const Loadble: LoadbleFactory;
-  export default Loadble;
+  const Loadable: LoadbleFactory;
+  export default Loadable;
 }
