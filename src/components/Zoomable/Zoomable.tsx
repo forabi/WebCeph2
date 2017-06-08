@@ -90,7 +90,7 @@ export class Zoomable extends React.PureComponent<Props, State> {
 
   applyZoom(f: number, e: React.MouseEvent<Element>) {
     const { x: mouseX, y: mouseY }: Coords = this.getMouseCoords(e);
-    if (this.state.canZoomIn && f > 1 || this.state.canZoomOut && f < 1) {
+    if ((this.state.canZoomIn && f > 1) || (this.state.canZoomOut && f < 1)) {
       const newScaleFactor = round(this.props.scaleFactor * f, 1);
       this.props.onZoom(newScaleFactor, mouseX, mouseY);
       e.preventDefault();
