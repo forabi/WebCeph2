@@ -3,6 +3,8 @@ import { render } from 'react-dom';
 
 import UncontrolledZoomable from 'components/Zoomable/UncontrolledZoomable';
 
+import 'layout/index.css';
+
 const app = document.getElementById('app');
 
 render(

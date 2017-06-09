@@ -7,6 +7,9 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const WebpackHTMLPlugin = require('html-webpack-plugin');
 const PreloadWebpackPlugin = require('preload-webpack-plugin');
 
+const autoprefixer = require('autoprefixer');
+const normalize = require('postcss-normalize');
+
 const { compact } = require('lodash');
 const path = require('path');
 const fs = require('fs');
@@ -115,6 +118,24 @@ const createSVGIconLoaders = name => [
   },
 ];
 
+const globalCSSLoaders = [
+  {
+    loader: 'css-loader',
+    query: {
+      minimize: env.isProd,
+    },
+  },
+  {
+    loader: 'postcss-loader',
+    options: {
+      plugins: [
+        normalize,
+        autoprefixer,
+      ],
+    }
+  },
+]
+
 const CSSModuleLoaders = [
   {
     loader: 'typings-for-css-modules-loader',
@@ -125,10 +146,24 @@ const CSSModuleLoaders = [
       minimize: env.isProd,
     },
   },
+  {
+    loader: 'postcss-loader',
+    options: {
+      plugins: [
+        normalize,
+        autoprefixer,
+      ],
+    }
+  },
 ];
 
+const extractGlobalCSS = new ExtractTextPlugin({
+  filename: '[name]_global.[contenthash].css',
+  allChunks: true,
+});
+
 const extractCSSModules = new ExtractTextPlugin({
-  filename: '[name].[contenthash].css',
+  filename: '[name]_local.[contenthash].css',
   allChunks: true,
 });
 
@@ -174,6 +209,22 @@ module.exports = {
         use: extractCSSModules.extract({
           fallback: 'style-loader',
           use: CSSModuleLoaders,
+        }),
+      },
+
+      // Global CSS
+      {
+        test: /\.css$/,
+        exclude: [
+          /node_modules/,
+          /\.module\.css$/,
+        ],
+        include: [
+          path.resolve(__dirname, 'src/layout'),
+        ],
+        use: extractGlobalCSS.extract({
+          fallback: 'style-loader',
+          use: globalCSSLoaders,
         }),
       },
   
@@ -297,6 +348,7 @@ module.exports = {
 
     // CSS
     extractCSSModules,
+    extractGlobalCSS,
 
     // SVG sprites
     new SpriteLoaderPlugin(),

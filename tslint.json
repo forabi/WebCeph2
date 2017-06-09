@@ -30,6 +30,7 @@
       "ignore-bound-class-methods"
     ],
     "import-name": false,
+    "no-import-side-effect": false,
     "export-name": false,
     "misnamed-import": false,
 
