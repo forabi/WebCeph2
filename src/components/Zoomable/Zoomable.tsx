@@ -102,8 +102,8 @@ export class Zoomable extends React.PureComponent<Props, State> {
    */
   getMouseCoords(ev: React.MouseEvent<Element>) {
     const { top, left, width, height } = this.viewer.getBoundingClientRect();
-    const x = clamp((ev.clientX - left), 0, width);
-    const y = clamp((ev.clientY - top), 0, height);
+    const x = clamp(ev.clientX - left, 0, width);
+    const y = clamp(ev.clientY - top, 0, height);
     // Now we have the mouse position applied correctly to the transormation
     // matrix, we inverse the matrix to get the original point on the element
     // with no transformations applied.

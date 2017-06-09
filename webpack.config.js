@@ -150,7 +150,7 @@ const CSSModuleLoaders = [
     loader: 'postcss-loader',
     options: {
       plugins: [
-        normalize,
+        // @WARN Do not include `normalize`
         autoprefixer,
       ],
     }
