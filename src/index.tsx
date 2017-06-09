@@ -17,3 +17,5 @@ render(
   </div>,
   app,
 );
+
+import('components/FlippableImage').then(console.log);

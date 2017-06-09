@@ -9,6 +9,7 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "dev": "HOT=1 NODE_ENV=development webpack-dev-server",
+    "clean": "rm -rf ./build/",
     "build": "DEBUG=build NODE_ENV=production webpack",
     "stats": "NODE_ENV=production webpack --json > stats.json"
   },
@@ -56,6 +57,7 @@
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.0.0",
     "babel-plugin-minify-empty-function": "^0.0.1",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-plugin-transform-inline-environment-variables": "^0.1.1",
     "babel-plugin-transform-node-env-inline": "^0.1.1",
     "babel-plugin-transform-remove-console": "^6.8.3",
@@ -81,6 +83,7 @@
     "name-all-modules-plugin": "^1.0.1",
     "preact": "^8.1.0",
     "preact-compat": "^3.16.0",
+    "preload-webpack-plugin": "^1.2.2",
     "prettier": "^1.4.2",
     "react-docgen-typescript": "^0.0.11",
     "react-styleguidist": "^5.2.1",

@@ -1,9 +1,11 @@
 const webpack = require('webpack');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
-const WebpackHTMLPlugin = require('html-webpack-plugin');
 const NameAllModulesPlugin = require('name-all-modules-plugin');
 const BabiliPlugin = require('babili-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+const WebpackHTMLPlugin = require('html-webpack-plugin');
+const PreloadWebpackPlugin = require('preload-webpack-plugin');
 
 const { compact } = require('lodash');
 const path = require('path');
@@ -55,6 +57,9 @@ const babelConfig = {
     'react',
     'stage-3',
   ]),
+  plugins: [
+    'syntax-dynamic-import',
+  ],
   sourceMaps: "both",
 };
 
@@ -223,7 +228,6 @@ module.exports = {
             options: {
               silent: true,
               compilerOptions: {
-                module: 'es2015',
                 jsx: 'preserve',
               },
             },
@@ -283,6 +287,12 @@ module.exports = {
           }
         : false,
       excludeAssets: [/\.rtl/i],
+    }),
+
+    new PreloadWebpackPlugin({
+      rel: 'preload',
+      as: 'script',
+      include: 'asyncChunks'
     }),
 
     // CSS
