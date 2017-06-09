@@ -137,7 +137,7 @@ const PUBLIC_PATH = env.isProd ? '' : '/';
 
 module.exports = {
   entry: {
-    bundle: [
+    app: [
       path.resolve(__dirname, 'src/index.tsx'),
     ],
   },
@@ -147,7 +147,7 @@ module.exports = {
     contentBase: PUBLIC_PATH,
     hot: env.isHot,
   } : undefined,
-  devtool: env.isDev ? 'eval' : 'inline-source-map',
+  devtool: env.isDev ? 'eval' : 'source-map',
 
   context: path.resolve(__dirname),
 
@@ -350,12 +350,20 @@ module.exports = {
       ...ifES5([
         new webpack.optimize.UglifyJsPlugin({
           minimize: true,
+          comments: false,
+          sourceMap: true,
         }),
       ]),
 
       ...ifESNext([
         new BabiliPlugin(),
       ]),
+
+      // Banner
+      new webpack.BannerPlugin({
+        entryOnly: true,
+        banner: `${pkg.displayName || pkg.name} hash:[hash], chunkhash:[chunkhash], name:[name]`,
+      }),
     ]),
   ]),
 };

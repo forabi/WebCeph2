@@ -1,5 +1,6 @@
 {
-  "name": "react-docgen-typescript-example",
+  "name": "webceph",
+  "displayName": "WebCeph",
   "version": "0.0.1",
   "description": "",
   "main": "lib/index.js",
