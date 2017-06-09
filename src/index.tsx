@@ -17,4 +17,3 @@ render(
   </div>,
   app,
 );
-
