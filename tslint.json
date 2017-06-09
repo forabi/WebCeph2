@@ -30,6 +30,9 @@
       "ignore-bound-class-methods"
     ],
     "import-name": false,
+    "export-name": false,
+    "misnamed-import": false,
+
     // Required so that React Styleguidist works
     "no-default-export": false,
 

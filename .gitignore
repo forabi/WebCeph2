@@ -4,3 +4,5 @@ tmp
 .vscode/*.db*
 build
 coverage
+.babelrc
+stats.json

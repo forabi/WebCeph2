@@ -1,17 +1,40 @@
-const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const webpack = require('webpack');
-const compact = require('lodash/compact');
+const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
+const WebpackHTMLPlugin = require('html-webpack-plugin');
+const NameAllModulesPlugin = require('name-all-modules-plugin');
+const BabiliPlugin = require('babili-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+const { compact } = require('lodash');
 const path = require('path');
-
+const fs = require('fs');
+const debug = require('debug');
 const pkg = require('./package.json');
-
 const env = require('./env');
-const { ifPreact, ifHot } = env;
 
-const babelLoader = {
-  loader: 'babel-loader',
-  options: {
-    presets: [
+const { ifES5, ifESNext, ifLint, ifProd, ifPreact, ifHot } = env;
+
+const log = debug('WebCeph');
+
+if (env.isPreact) {
+  log('Building with Preact instead of React');
+}
+
+if (env.isES5) {
+  log('Building with babel-preset-es2015 instead of babel-preset-env');
+}
+
+const babelConfig = {
+  presets: compact([
+    ifES5(
+      ['es2015', { modules: false }],
+      null,
+    ),
+    ...ifESNext([
+      ...ifProd([
+        ['babili', { removeConsole: true, removeDebugger: true, mangle: false }],
+        'react-optimize',
+      ]),
       [
         'env',
         {
@@ -23,10 +46,26 @@ const babelLoader = {
           useBuiltIns: true,
         },
       ],
-      'react',
-      'stage-3',
     ],
-  },
+    ),
+    'react',
+    'stage-3',
+  ]),
+  sourceMaps: "both",
+};
+
+// Write .babelrc to disk so that it can be used by BabiliPlugin and other plugins
+// that do not allow configuration via JS
+fs.writeFileSync(
+  path.resolve(__dirname, '.babelrc'),
+  JSON.stringify(babelConfig, undefined, 2),
+);
+
+log(babelConfig);
+
+const babelLoader = {
+  loader: 'babel-loader',
+  options: babelConfig,
 };
 
 const svgoConfig = {
@@ -52,7 +91,7 @@ const svgoConfig = {
   ],
 };
 
-const createSVGIc1onLoaders = name => [
+const createSVGIconLoaders = name => [
   {
     loader: 'svg-sprite-loader',
     options: {
@@ -67,38 +106,90 @@ const createSVGIc1onLoaders = name => [
   },
 ];
 
+const CSSModuleLoaders = [
+  {
+    loader: 'typings-for-css-modules-loader',
+    options: {
+      namedExport: true,
+      module: true,
+      localIdentName: '[name]_[local]_[hash:base64:5]',
+      minimize: env.isProd,
+    },
+  },
+];
+
+const extractCSSModules = new ExtractTextPlugin({
+  filename: '[name].[contenthash].css',
+  allChunks: true,
+});
+
+const BUILD_PATH = path.resolve(__dirname, process.env.BUILD_PATH || 'build');
+const PUBLIC_PATH = env.isProd ? '' : '/';
+
 module.exports = {
   entry: {
-    bundle: [path.resolve(__dirname, 'index.ts')],
+    bundle: [
+      path.resolve(__dirname, 'src/index.tsx'),
+    ],
   },
+
+  devServer: env.isDev ? {
+    inline: true,
+    contentBase: PUBLIC_PATH,
+    hot: env.isHot,
+  } : undefined,
+  devtool: env.isDev ? 'eval' : 'inline-source-map',
+
   context: path.resolve(__dirname),
+
   output: {
-    filename: 'bundle.js',
-    path: path.join(__dirname, 'temp'),
-    publicPath: '/',
+    path: BUILD_PATH,
+    filename: env.isProd ? '[name]_[chunkhash].js' : '[name]_[hash].js',
+    publicPath: PUBLIC_PATH,
   },
+
+  performance: env.isProd
+    ? {
+        hints: 'error',
+        maxEntrypointSize: 700000,
+        maxAssetSize: 1000000,
+      }
+    : false,
+
   module: {
-    rules: [
+    rules: compact([
+      // CSS Modules
       {
         test: /\.module\.css$/,
         exclude: /node_modules/,
-        use: [
-          'style-loader',
-          {
-            loader: 'typings-for-css-modules-loader',
-            options: {
-              namedExport: true,
-              module: true,
-              localIdentName: '[name]_[local]_[hash:base64:5]',
-            },
-          },
-        ],
+        use: extractCSSModules.extract({
+          fallback: 'style-loader',
+          use: CSSModuleLoaders,
+        }),
       },
+  
+      // JavaScript
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: [babelLoader],
       },
+
+      // TSLint
+      ifLint(ifProd({
+        test: /\.tsx?$/,
+        enforce: 'pre',
+        use: [
+          {
+            loader: 'tslint-loader',
+            query: {
+              emitErrors: !env.isDev,
+            },
+          },
+        ],
+      })),
+
+      // TypeScript
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
@@ -107,23 +198,29 @@ module.exports = {
           {
             loader: 'ts-loader',
             options: {
-              module: 'es2015',
-              jsx: 'preserve',
+              silent: true,
+              compilerOptions: {
+                // module: 'es2015',
+                jsx: 'preserve',
+              },
             },
           },
         ],
       },
+
+      // SVG Icons
       {
         test: /\.svg$/,
         include: [path.resolve(__dirname, 'src/icons')],
-        use: createSVGIc1onLoaders('icons.svg'),
+        use: createSVGIconLoaders('icons.svg'),
       },
-    ],
+    ]),
   },
   resolve: {
     alias: Object.assign(
       {
         lodash: 'lodash-es',
+        'transformation-matrix': 'transformation-matrix/build-es'
       },
       ifPreact({
         react: 'preact-compat',
@@ -135,9 +232,98 @@ module.exports = {
     modules: [path.join(__dirname, 'src'), 'node_modules'],
   },
   plugins: compact([
-    new SpriteLoaderPlugin(),
+    // Development
     new webpack.WatchIgnorePlugin([/\.d\.ts$/, /node_modules/]),
-    new webpack.NoEmitOnErrorsPlugin(),
     ifHot(new webpack.HotModuleReplacementPlugin()),
+
+    // Error handling
+    new webpack.NoEmitOnErrorsPlugin(),
+
+    // Environment
+    new webpack.DefinePlugin({
+      __DEBUG__: JSON.stringify(env.isDev),
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      isHot: JSON.stringify(env.isHot),
+    }),
+  
+    // HTML index
+    new WebpackHTMLPlugin({
+      filename: 'index.html',
+      template: path.resolve(__dirname, 'src/index.html'),
+      inject: 'body',
+      minify: env.isProd
+        ? {
+            html5: true,
+            collapseBooleanAttributes: true,
+            collapseInlineTagWhitespace: true,
+            collapseWhitespace: true,
+          }
+        : false,
+      excludeAssets: [/\.rtl/i],
+    }),
+
+    // CSS
+    extractCSSModules,
+
+    // SVG sprites
+    new SpriteLoaderPlugin(),
+
+    // Production-only
+    ...ifProd([
+      // Chunks
+      // See https://medium.com/webpack/predictable-long-term-caching-with-webpack-d3eee1d3fa31
+      new webpack.NamedModulesPlugin(),
+      new webpack.NamedChunksPlugin(),
+      new NameAllModulesPlugin(),
+
+      // The order of the following instances is important
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor',
+        minChunks(module) {
+          return (
+            module.context &&
+            module.context.indexOf('node_modules') !== -1
+          );
+        },
+      }),
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'preact',
+        minChunks(module) {
+          if (module.request !== undefined) {
+            const relative = path.relative('./node_modules', module.request);
+            return (
+              module.context &&
+              module.context.indexOf('node_modules') !== -1 &&
+              relative.startsWith('preact')
+            );
+          }
+          return false;
+        },
+      }),
+      new webpack.optimize.CommonsChunkPlugin({
+        async: true,
+        minChunks: Infinity,
+      }),
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'manifest',
+        minChunks: Infinity,
+      }),
+      new webpack.optimize.AggressiveMergingPlugin({
+        moveToParents: true,
+      }),
+    
+      new webpack.optimize.OccurrenceOrderPlugin(true),
+
+      // Minification
+      ...ifES5([
+        new webpack.optimize.UglifyJsPlugin({
+          minimize: true,
+        }),
+      ]),
+
+      ...ifESNext([
+        new BabiliPlugin(),
+      ]),
+    ]),
   ]),
 };
