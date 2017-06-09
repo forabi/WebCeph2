@@ -9,7 +9,7 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "dev": "HOT=1 NODE_ENV=development webpack-dev-server",
-    "build": "NODE_ENV=production webpack",
+    "build": "DEBUG=build NODE_ENV=production webpack",
     "stats": "NODE_ENV=production webpack --json > stats.json"
   },
   "lint-staged": {
@@ -71,6 +71,7 @@
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
     "eslint-config-prettier": "^2.1.1",
+    "eslint-loader": "^1.7.1",
     "eslint-plugin-import": "^2.3.0",
     "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-react": "^7.0.1",

@@ -14,7 +14,7 @@ const env = require('./env');
 
 const { ifES5, ifESNext, ifLint, ifProd, ifPreact, ifHot } = env;
 
-const log = debug('WebCeph');
+const log = debug('build');
 
 if (env.isPreact) {
   log('Building with Preact instead of React');
@@ -22,6 +22,10 @@ if (env.isPreact) {
 
 if (env.isES5) {
   log('Building with babel-preset-es2015 instead of babel-preset-env');
+}
+
+if (!env.shouldLint) {
+  log('Linting is disabled');
 }
 
 const babelConfig = {
@@ -168,7 +172,23 @@ module.exports = {
         }),
       },
   
-      // JavaScript
+      // ESLint
+      ifLint(ifProd({
+        test: /\.jsx?$/,
+        enforce: 'pre',
+        use: [
+          {
+            loader: 'eslint-loader',
+            query: {
+              failOnError: env.isProd,
+              failOnWarning: env.isProd,
+              fix: env.isProd,
+            },
+          },
+        ],
+      })),
+
+      // Babel
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
@@ -182,8 +202,11 @@ module.exports = {
         use: [
           {
             loader: 'tslint-loader',
-            query: {
-              emitErrors: !env.isDev,
+            options: {
+              emitErrors: env.isProd,
+              failOnHint: env.isProd,
+              typeCheck: false,
+              fix: false,
             },
           },
         ],
@@ -200,7 +223,7 @@ module.exports = {
             options: {
               silent: true,
               compilerOptions: {
-                // module: 'es2015',
+                module: 'es2015',
                 jsx: 'preserve',
               },
             },
@@ -287,14 +310,13 @@ module.exports = {
         },
       }),
       new webpack.optimize.CommonsChunkPlugin({
-        name: 'preact',
+        name: 'react',
         minChunks(module) {
-          if (module.request !== undefined) {
-            const relative = path.relative('./node_modules', module.request);
+          if (module.context !== undefined) {
+            const relative = path.relative('./node_modules', module.context);
             return (
-              module.context &&
               module.context.indexOf('node_modules') !== -1 &&
-              relative.startsWith('preact')
+              relative.match(/^p?react/i)
             );
           }
           return false;

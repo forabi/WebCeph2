@@ -3,14 +3,12 @@ import * as cx from 'classnames';
 import * as bindClassnames from 'classnames/bind';
 import round from 'lodash/round';
 import clamp from 'lodash/clamp';
-import {
-  applyToPoint,
-  inverse,
-  scale,
-  toCSS,
-  transform,
-  translate,
-} from 'transformation-matrix';
+import { applyToPoint } from 'transformation-matrix/applyToPoint';
+import { inverse } from 'transformation-matrix/inverse';
+import { scale } from 'transformation-matrix/scale';
+import { toCSS } from 'transformation-matrix/toString';
+import { transform } from 'transformation-matrix/transform';
+import { translate } from 'transformation-matrix/translate';
 
 import * as classNames from './Zoomable.module.css';
 

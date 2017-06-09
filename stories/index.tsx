@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { storiesOf } from '@storybook/react';
 import { UncontrolledZoomable } from 'components/Zoomable/UncontrolledZoomable';
+
+// tslint:disable-next-line no-require-imports no-var-requires
+const { storiesOf } = require('@storybook/react');
 
 storiesOf(UncontrolledZoomable.name, module).add('with text', () =>
   <div style={{ overflow: 'auto', height: 500 }}>
