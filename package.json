@@ -95,6 +95,7 @@
     "tslint-language-service": "^0.9.6",
     "tslint-loader": "^3.5.3",
     "typescript": "next",
+    "typings": "^2.1.1",
     "typings-for-css-modules-loader": "^1.5.0",
     "webpack": "^2.6.1",
     "webpack-dev-server": "^2.4.5"
