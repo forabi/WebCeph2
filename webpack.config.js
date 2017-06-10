@@ -18,7 +18,7 @@ const debug = require('debug');
 const pkg = require('./package.json');
 const env = require('./env');
 
-const { ifES5, ifESNext, ifLint, ifProd, ifPreact, ifHot, ifTest } = env;
+const { ifES5, ifESNext, ifLint, ifProd, ifReact, ifPreact, ifHot, ifTest } = env;
 
 const log = debug('build');
 
@@ -191,7 +191,7 @@ module.exports = {
 
   entry: {
     app: compact([
-      ifHot('react-hot-loader/patch'),
+      ifReact(ifHot('react-hot-loader/patch')),
       ifHot('webpack-hot-middleware/client'),
       path.resolve(__dirname, 'src/index.tsx'),
     ]),
@@ -285,7 +285,7 @@ module.exports = {
         test: /\.jsx?$/,
         exclude: excludedPatterns,
         use: compact([
-          ifHot('react-hot-loader/webpack'),
+          ifReact(ifHot('react-hot-loader/webpack')),
           babelLoader,
         ]),
       },
@@ -313,7 +313,7 @@ module.exports = {
         test: /\.tsx?$/,
         exclude: excludedPatterns,
         use: compact([
-          ifHot('react-hot-loader/webpack'),
+          ifReact(ifHot('react-hot-loader/webpack')),
           babelLoader,
           {
             loader: 'ts-loader',

@@ -35,7 +35,7 @@ module.exports = (config) => {
     preprocessors: {
       'test/index.js': ['webpack'],
     },
-    plugins: [
+    plugins: compact([
       'karma-mocha',
       'karma-mocha-reporter',
       'karma-chrome-launcher',
@@ -44,9 +44,9 @@ module.exports = (config) => {
       'karma-junit-reporter',
       'karma-coverage',
       'karma-remap-coverage',
-      'karma-sauce-launcher',
+      ifCI('karma-sauce-launcher'),
       'karma-webpack',
-    ],
+    ]),
     reporters: compact([
       'mocha',
       'coverage',

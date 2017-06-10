@@ -5,6 +5,9 @@ node_js:
 
 cache: yarn
 
+after_success:
+  - yarn build
+
 addons:
   sauce_connect: true
 

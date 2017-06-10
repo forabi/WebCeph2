@@ -13,15 +13,20 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "clean": "rm -rf ./build/",
-    "webpack": "DEBUG=build NODE_ENV=production webpack",
+    "webpack:prod": "DEBUG=build NODE_ENV=production webpack",
     "webpack:dev": "HOT=1 NODE_ENV=development webpack-dev-server",
     "webpack:stats": "NODE_ENV=production webpack --json > stats.json",
-    "build": "yarn test && yarn webpack"
+    "serve": "cd build && nohup simplehttp2server > /dev/null &",
+    "kill-server": "killall -9 simplehttp2server",
+    "lighthouse": "lighthouse https://localhost:5000/ --skip-autolaunch --save-assets --save--artifacts --output=json --output=html --output-path=./lighthouse-report.json",
+    "audit": "npm-run-all -s serve lighthouse kill-server",
+    "webpack": "run-p -l webpack:prod webpack:stats",
+    "build": "npm-run-all -l -s webpack audit"
   },
   "lint-staged": {
-    "{.,{src,stories,test}/**}/*.{j,t}s{x,}": "prettier --write --single-quote --trailing-comma all",
-    "{.,{src,stories,test}/**}/**/*.ts{,x}": "tslint",
-    "{.,{src,stories,test}/**}/**/*.{s,}css": "stylelint"
+    "**/*.{j,t}s{x,}": "prettier --write --single-quote --trailing-comma all",
+    "**/**/*.ts{,x}": "tslint",
+    "**/**/*.{s,}css": "stylelint"
   },
   "pre-commit": [
     "lint-staged"
@@ -30,7 +35,8 @@
     "last 5 Chrome versions",
     "last 5 Firefox versions",
     "last 2 versions",
-    "IE >= 11"
+    "IE >= 11",
+    "not OperaMini all"
   ],
   "author": "Muhammad Fawwaz Orabi <mfawwaz93@gmail.com>",
   "license": "MIT",
@@ -50,6 +56,7 @@
     "lint-staged": "^3.6.0",
     "lodash": "^4.17.4",
     "lodash-es": "^4.17.4",
+    "npm-run-all": "^4.0.2",
     "pre-commit": "^1.2.2",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
@@ -101,6 +108,7 @@
     "karma-sauce-launcher": "^1.1.0",
     "karma-source-map-support": "^1.2.0",
     "karma-webpack": "^2.0.3",
+    "lighthouse-cli": "^0.1.2",
     "mocha": "^3.4.2",
     "name-all-modules-plugin": "^1.0.1",
     "postcss-loader": "^2.0.5",
