@@ -57,14 +57,10 @@ This will fetch and install all the packages required to develop and build the a
 To start a local development server, use the following command:
 
 ```
-yarn run dev
+yarn webpack:dev
 ```
 
-This will run a version of the app [locally on port 8080](http://localhost:8080/), the port can be changed by setting the `PORT` environment variable:
-
-```
-PORT=5678 yarn run dev
-```
+This will run a version of the app [locally on port 8080](http://localhost:8080/).
 
 The server is configured to hot-reload whenever a source file is changed so you can edit files and see the changes immediately without having to restart the server. This makes development much faster.
 

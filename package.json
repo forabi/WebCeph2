@@ -12,10 +12,11 @@
     "lint-staged": "lint-staged",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "dev": "HOT=1 NODE_ENV=development webpack-dev-server",
     "clean": "rm -rf ./build/",
-    "build": "DEBUG=build NODE_ENV=production webpack",
-    "stats": "NODE_ENV=production webpack --json > stats.json"
+    "webpack": "DEBUG=build NODE_ENV=production webpack",
+    "webpack:dev": "HOT=1 NODE_ENV=development webpack-dev-server",
+    "webpack:stats": "NODE_ENV=production webpack --json > stats.json",
+    "build": "yarn test && yarn webpack"
   },
   "lint-staged": {
     "{.,{src,stories,test}/**}/*.{j,t}s{x,}": "prettier --write --single-quote --trailing-comma all",
