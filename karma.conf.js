@@ -7,6 +7,7 @@ const COVERAGE_DIR = process.env.COVERAGE_DIR || 'coverage';
 const TEST_REPORTS_DIR = process.env.TEST_REPORTS || 'reports';
 
 const customLaunchers = b2s().map(c => Object.assign({ base: 'SauceLabs' }, c));
+const sauceBrowsers = customLaunchers.map(c => `${c.browserName} ${c.version} on ${c.platform}`);
 
 module.exports = (config) => {
   if (isCI && (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY)) {
@@ -16,7 +17,7 @@ module.exports = (config) => {
     );
     process.exit(1);
   }
-  const browsers = isCI ? Object.keys(customLaunchers) : ['ChromeHeadless'];
+  const browsers = isCI ? sauceBrowsers : ['ChromeHeadless'];
   console.log(browsers);
   /* eslint-disable global-require */
   const webpackConfig = require('./webpack.config');
