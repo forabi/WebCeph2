@@ -65,9 +65,13 @@ const babelConfig = {
     'react',
     'stage-3',
   ]),
-  plugins: [
+  plugins: compact([
     'syntax-dynamic-import',
-  ],
+    ...ifProd([
+      'transform-node-env-inline',
+      'transform-inline-environment-variables',
+    ])
+  ]),
   sourceMaps: "both",
 };
 
