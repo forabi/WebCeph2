@@ -122,6 +122,7 @@
     "react-styleguidist": "^5.2.1",
     "regenerator-runtime": "^0.10.5",
     "rtlcss": "^2.2.0",
+    "simplehttp2server": "^2.0.0",
     "style-loader": "^0.18.2",
     "stylelint": "^7.10.1",
     "stylelint-config-standard": "^16.0.0",
