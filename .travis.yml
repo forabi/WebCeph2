@@ -6,7 +6,8 @@ node_js:
 cache: yarn
 
 before_deploy:
-  yarn build
+  - go get github.com/GoogleChrome/simplehttp2server
+  - yarn build
 
 deploy:
   provider: pages
