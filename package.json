@@ -19,7 +19,7 @@
   },
   "lint-staged": {
     "{.,{src,stories,test}/**}/*.{j,t}s{x,}|(!*.d.ts)": "prettier --write --single-quote --trailing-comma all",
-    "{.,{src,stories,test}/**}/**/*.!(.d)ts{,x}|(!*.d.ts)": "tslint",
+    "{.,{src,stories,test}/**}/**/*.ts{,x}|(!*.d.ts)": "tslint",
     "{.,{src,stories,test}/**}/**/*.{s,}css": "stylelint"
   },
   "pre-commit": [
