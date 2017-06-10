@@ -34,6 +34,12 @@ if (!env.shouldLint) {
   log('Linting is disabled');
 }
 
+const excludedPatterns = compact([
+  /node_modules/,
+  ifProd(/\.test\.tsx?$/),
+  ifProd(/\.test\.jsx?$/),
+]);
+
 const babelConfig = {
   presets: compact([
     ifES5(
@@ -181,10 +187,14 @@ const BUILD_PATH = path.resolve(__dirname, process.env.BUILD_PATH || 'build');
 const PUBLIC_PATH = env.isProd ? '' : '/';
 
 module.exports = {
+  // bail: env.isProd || env.isTest,
+
   entry: {
-    app: [
+    app: compact([
+      ifHot('react-hot-loader/patch'),
+      ifHot('webpack-hot-middleware/client'),
       path.resolve(__dirname, 'src/index.tsx'),
-    ],
+    ]),
   },
 
   devServer: env.isDev ? {
@@ -215,7 +225,7 @@ module.exports = {
       // Stylelint
       ifLint(ifProd({
         test: /\.css$/,
-        exclude: /node_modules/,
+        exclude: excludedPatterns,
         enforce: 'pre',
         use: {
           loader: 'postcss-loader',
@@ -230,7 +240,7 @@ module.exports = {
       // CSS Modules
       {
         test: /\.module\.css$/,
-        exclude: /node_modules/,
+        exclude: excludedPatterns,
         use: extractCSSModules.extract({
           fallback: 'style-loader',
           use: CSSModuleLoaders,
@@ -241,7 +251,7 @@ module.exports = {
       {
         test: /\.css$/,
         exclude: [
-          /node_modules/,
+          ...excludedPatterns,
           /\.module\.css$/,
         ],
         include: [
@@ -256,6 +266,7 @@ module.exports = {
       // ESLint
       ifLint(ifProd({
         test: /\.jsx?$/,
+        exclude: excludedPatterns,
         enforce: 'pre',
         use: [
           {
@@ -272,13 +283,17 @@ module.exports = {
       // Babel
       {
         test: /\.jsx?$/,
-        exclude: /node_modules/,
-        use: [babelLoader],
+        exclude: excludedPatterns,
+        use: compact([
+          ifHot('react-hot-loader/webpack'),
+          babelLoader,
+        ]),
       },
 
       // TSLint
       ifLint(ifProd({
         test: /\.tsx?$/,
+        exclude: excludedPatterns,
         enforce: 'pre',
         use: [
           {
@@ -296,8 +311,9 @@ module.exports = {
       // TypeScript
       {
         test: /\.tsx?$/,
-        exclude: /node_modules/,
-        use: [
+        exclude: excludedPatterns,
+        use: compact([
+          ifHot('react-hot-loader/webpack'),
           babelLoader,
           {
             loader: 'ts-loader',
@@ -308,12 +324,13 @@ module.exports = {
               },
             },
           },
-        ],
+        ]),
       },
 
       // SVG Icons
       {
         test: /\.svg$/,
+        exclude: excludedPatterns,
         include: [path.resolve(__dirname, 'src/icons')],
         use: createSVGIconLoaders('icons.svg'),
       },
@@ -378,11 +395,12 @@ module.exports = {
     // SVG sprites
     new SpriteLoaderPlugin(),
 
+    new webpack.NamedModulesPlugin(),
+
     // Production-only
     ...ifProd([
       // Chunks
       // See https://medium.com/webpack/predictable-long-term-caching-with-webpack-d3eee1d3fa31
-      new webpack.NamedModulesPlugin(),
       new webpack.NamedChunksPlugin(),
       new NameAllModulesPlugin(),
 

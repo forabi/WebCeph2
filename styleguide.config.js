@@ -1,8 +1,12 @@
 const path = require('path');
 const glob = require('glob');
 
+const docgenTypeScript = require('react-docgen-typescript');
+const docgen = require('react-docgen');
+
 module.exports = {
   title: 'WebCeph Style Guide',
+
   components() {
     return glob
       .sync(path.resolve(__dirname, 'src/components/**/*.tsx'))
@@ -10,8 +14,8 @@ module.exports = {
         return /\/[A-Z]\w*\.tsx$/.test(module);
       });
   },
-  resolver: require('react-docgen').resolver.findAllComponentDefinitions,
 
-  //propsParser: require('../../lib/propTypesParser').parse,
-  propsParser: require('react-docgen-typescript').parse,
+  resolver: docgen.resolver.findAllComponentDefinitions,
+
+  propsParser: docgenTypeScript.parse,
 };

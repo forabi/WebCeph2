@@ -38,3 +38,4 @@ exports.ifInferno = createConditionalWithFallback(exports.isInferno);
 exports.ifES5 = createConditionalWithFallback(exports.isES5);
 exports.ifLint = createConditionalWithFallback(exports.shouldLint);
 exports.ifESNext = createConditionalWithFallback(exports.isESNext);
+exports.ifCI = createConditionalWithFallback(exports.isCI);
