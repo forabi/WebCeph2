@@ -29,15 +29,16 @@
     "semicolon": [
       "ignore-bound-class-methods"
     ],
-    "import-name": false,
-    "no-import-side-effect": false,
-    "export-name": false,
-    "misnamed-import": false,
+    "array-type": false,
 
     // Required so that React Styleguidist works
     "no-default-export": false,
 
     // microsoft-tslint-contrib
+    "import-name": false,
+    "export-name": false,
+    "no-import-side-effect": false,
+    "misnamed-import": false,
     "restrict-plus-operand": false,
     "no-single-line-block-comment": false,
     "react-unused-props-and-state": false,

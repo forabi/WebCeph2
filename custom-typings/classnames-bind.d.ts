@@ -4,7 +4,7 @@ declare module 'classnames/bind' {
   type Bindable = {
     bind<T extends string>(
       classNames: Record<T, string>,
-    ): (...classNames: Array<ClassValue<T>>) => string;
+    ): (...classNames: ClassValue<T>[]) => string;
     bind(classNames: object): typeof classnames;
   };
   const bindable: Bindable;
