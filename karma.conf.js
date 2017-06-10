@@ -6,7 +6,7 @@ const { isCI, ifCI } = require('./env');
 const COVERAGE_DIR = process.env.COVERAGE_DIR || 'coverage';
 const TEST_REPORTS_DIR = process.env.TEST_REPORTS || 'reports';
 
-const sauceLaunchers = b2s().map(c => Object.assign({ base: 'SauceLabs' }, c));
+const customLaunchers = b2s().map(c => Object.assign({ base: 'SauceLabs' }, c));
 
 module.exports = (config) => {
   if (isCI && (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY)) {
@@ -16,6 +16,8 @@ module.exports = (config) => {
     );
     process.exit(1);
   }
+  const browsers = isCI ? Object.keys(customLaunchers) : ['ChromeHeadless'];
+  console.log(browsers);
   /* eslint-disable global-require */
   const webpackConfig = require('./webpack.config');
   webpackConfig.devtool = 'inline-source-map';
@@ -66,10 +68,11 @@ module.exports = (config) => {
     port: 9876,
     colors: true,
     logLevel: config.LOG_ERROR,
-    browsers: isCI ? sauceLaunchers : ['ChromeHeadless'],
+    browsers,
     singleRun: false,
     concurrency: Infinity,
     webpack: webpackConfig,
+    customLaunchers,
     webpackServer: {
       stats: {
         chunks: false,
