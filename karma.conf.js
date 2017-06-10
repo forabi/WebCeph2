@@ -7,18 +7,17 @@ const COVERAGE_DIR = process.env.COVERAGE_DIR || 'coverage';
 const TEST_REPORTS_DIR = process.env.TEST_REPORTS || 'reports';
 
 const sauceBrowsers = b2s().map(c => Object.assign({ base: 'SauceLabs' }, c));
-const sauceBrowserNames = sauceBrowsers.map(c => `${c.browserName} ${c.version} on ${c.platform}`);
-
-const customLaunchers = zipObject(
-  sauceBrowserNames,
-  sauceBrowsers,
+const sauceBrowserNames = sauceBrowsers.map(
+  c => `${c.browserName} ${c.version} on ${c.platform}`,
 );
 
-module.exports = (config) => {
+const customLaunchers = zipObject(sauceBrowserNames, sauceBrowsers);
+
+module.exports = config => {
   if (isCI && (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY)) {
     console.log(
-      'Make sure the SAUCE_USERNAME and '+
-      'SAUCE_ACCESS_KEY environment variables are set.',
+      'Make sure the SAUCE_USERNAME and ' +
+        'SAUCE_ACCESS_KEY environment variables are set.',
     );
     process.exit(1);
   }
@@ -26,12 +25,10 @@ module.exports = (config) => {
   /* eslint-disable global-require */
   const webpackConfig = require('./webpack.config');
   webpackConfig.devtool = 'inline-source-map';
-  webpackConfig.entry = () => ({ });
+  webpackConfig.entry = () => ({});
   config.set({
     frameworks: ['mocha', 'source-map-support'],
-    files: [
-      'test/index.js',
-    ],
+    files: ['test/index.js'],
     preprocessors: {
       'test/index.js': ['webpack'],
     },

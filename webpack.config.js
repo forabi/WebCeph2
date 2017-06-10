@@ -18,7 +18,16 @@ const debug = require('debug');
 const pkg = require('./package.json');
 const env = require('./env');
 
-const { ifES5, ifESNext, ifLint, ifProd, ifReact, ifPreact, ifHot, ifTest } = env;
+const {
+  ifES5,
+  ifESNext,
+  ifLint,
+  ifProd,
+  ifReact,
+  ifPreact,
+  ifHot,
+  ifTest,
+} = env;
 
 const log = debug('build');
 
@@ -42,18 +51,18 @@ const excludedPatterns = compact([
 
 const babelConfig = {
   presets: compact([
-    ifES5(
-      ['es2015', { modules: false }],
-      null,
-    ),
+    ifES5(['es2015', { modules: false }], null),
     ...ifESNext([
       ...ifProd([
-        ['babili', {
-          removeConsole: true,
-          removeDebugger: true,
-          mangle: false,
-          simplify: false,
-        }],
+        [
+          'babili',
+          {
+            removeConsole: true,
+            removeDebugger: true,
+            mangle: false,
+            simplify: false,
+          },
+        ],
         'react-optimize',
       ]),
       [
@@ -67,8 +76,7 @@ const babelConfig = {
           useBuiltIns: true,
         },
       ],
-    ],
-    ),
+    ]),
     'react',
     'stage-3',
   ]),
@@ -77,9 +85,9 @@ const babelConfig = {
     ...ifProd([
       'transform-node-env-inline',
       'transform-inline-environment-variables',
-    ])
+    ]),
   ]),
-  sourceMaps: "both",
+  sourceMaps: 'both',
 };
 
 // Write .babelrc to disk so that it can be used by BabiliPlugin and other plugins
@@ -144,13 +152,10 @@ const globalCSSLoaders = [
   {
     loader: 'postcss-loader',
     options: {
-      plugins: [
-        normalize,
-        autoprefixer,
-      ],
-    }
+      plugins: [normalize, autoprefixer],
+    },
   },
-]
+];
 
 const CSSModuleLoaders = [
   {
@@ -169,7 +174,7 @@ const CSSModuleLoaders = [
         // @WARN Do not include `normalize`
         autoprefixer,
       ],
-    }
+    },
   },
 ];
 
@@ -197,11 +202,13 @@ module.exports = {
     ]),
   },
 
-  devServer: env.isDev ? {
-    inline: true,
-    contentBase: PUBLIC_PATH,
-    hot: env.isHot,
-  } : undefined,
+  devServer: env.isDev
+    ? {
+        inline: true,
+        contentBase: PUBLIC_PATH,
+        hot: env.isHot,
+      }
+    : undefined,
   devtool: env.isDev ? 'eval' : 'source-map',
 
   context: path.resolve(__dirname),
@@ -223,19 +230,19 @@ module.exports = {
   module: {
     rules: compact([
       // Stylelint
-      ifLint(ifProd({
-        test: /\.css$/,
-        exclude: excludedPatterns,
-        enforce: 'pre',
-        use: {
-          loader: 'postcss-loader',
-          options: {
-            plugins: [
-              stylelint,
-            ],
+      ifLint(
+        ifProd({
+          test: /\.css$/,
+          exclude: excludedPatterns,
+          enforce: 'pre',
+          use: {
+            loader: 'postcss-loader',
+            options: {
+              plugins: [stylelint],
+            },
           },
-        },
-      })),
+        }),
+      ),
 
       // CSS Modules
       {
@@ -250,63 +257,59 @@ module.exports = {
       // Global CSS
       {
         test: /\.css$/,
-        exclude: [
-          ...excludedPatterns,
-          /\.module\.css$/,
-        ],
-        include: [
-          path.resolve(__dirname, 'src/layout'),
-        ],
+        exclude: [...excludedPatterns, /\.module\.css$/],
+        include: [path.resolve(__dirname, 'src/layout')],
         use: extractGlobalCSS.extract({
           fallback: 'style-loader',
           use: globalCSSLoaders,
         }),
       },
-  
+
       // ESLint
-      ifLint(ifProd({
-        test: /\.jsx?$/,
-        exclude: excludedPatterns,
-        enforce: 'pre',
-        use: [
-          {
-            loader: 'eslint-loader',
-            query: {
-              failOnError: env.isProd,
-              failOnWarning: env.isProd,
-              fix: env.isProd,
+      ifLint(
+        ifProd({
+          test: /\.jsx?$/,
+          exclude: excludedPatterns,
+          enforce: 'pre',
+          use: [
+            {
+              loader: 'eslint-loader',
+              query: {
+                failOnError: env.isProd,
+                failOnWarning: env.isProd,
+                fix: env.isProd,
+              },
             },
-          },
-        ],
-      })),
+          ],
+        }),
+      ),
 
       // Babel
       {
         test: /\.jsx?$/,
         exclude: excludedPatterns,
-        use: compact([
-          ifReact(ifHot('react-hot-loader/webpack')),
-          babelLoader,
-        ]),
+        use: compact([ifReact(ifHot('react-hot-loader/webpack')), babelLoader]),
       },
 
       // TSLint
-      ifLint(ifProd({
-        test: /\.tsx?$/,
-        exclude: excludedPatterns,
-        enforce: 'pre',
-        use: [
-          {
-            loader: 'tslint-loader',
-            options: {
-              emitErrors: env.isProd,
-              failOnHint: env.isProd,
-              typeCheck: false,
-              fix: false,
+      ifLint(
+        ifProd({
+          test: /\.tsx?$/,
+          exclude: excludedPatterns,
+          enforce: 'pre',
+          use: [
+            {
+              loader: 'tslint-loader',
+              options: {
+                emitErrors: env.isProd,
+                failOnHint: env.isProd,
+                typeCheck: false,
+                fix: false,
+              },
             },
-          },
-        ],
-      })),
+          ],
+        }),
+      ),
 
       // TypeScript
       {
@@ -355,7 +358,7 @@ module.exports = {
     alias: Object.assign(
       {
         lodash: 'lodash-es',
-        'transformation-matrix': 'transformation-matrix/build-es'
+        'transformation-matrix': 'transformation-matrix/build-es',
       },
       ifPreact({
         react: 'preact-compat',
@@ -380,7 +383,7 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       isHot: JSON.stringify(env.isHot),
     }),
-  
+
     // HTML index
     new WebpackHTMLPlugin({
       filename: 'index.html',
@@ -400,7 +403,7 @@ module.exports = {
     new PreloadWebpackPlugin({
       rel: 'preload',
       as: 'script',
-      include: 'asyncChunks'
+      include: 'asyncChunks',
     }),
 
     // CSS
@@ -424,8 +427,7 @@ module.exports = {
         name: 'vendor',
         minChunks(module) {
           return (
-            module.context &&
-            module.context.indexOf('node_modules') !== -1
+            module.context && module.context.indexOf('node_modules') !== -1
           );
         },
       }),
@@ -453,7 +455,7 @@ module.exports = {
       new webpack.optimize.AggressiveMergingPlugin({
         moveToParents: true,
       }),
-    
+
       new webpack.optimize.OccurrenceOrderPlugin(true),
 
       // Minification
@@ -465,14 +467,13 @@ module.exports = {
         }),
       ]),
 
-      ...ifESNext([
-        new BabiliPlugin(),
-      ]),
+      ...ifESNext([new BabiliPlugin()]),
 
       // Banner
       new webpack.BannerPlugin({
         entryOnly: true,
-        banner: `${pkg.displayName || pkg.name} hash:[hash], chunkhash:[chunkhash], name:[name]`,
+        banner: `${pkg.displayName ||
+          pkg.name} hash:[hash], chunkhash:[chunkhash], name:[name]`,
       }),
     ]),
   ]),
