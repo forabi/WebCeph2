@@ -18,7 +18,7 @@ const debug = require('debug');
 const pkg = require('./package.json');
 const env = require('./env');
 
-const { ifES5, ifESNext, ifLint, ifProd, ifPreact, ifHot } = env;
+const { ifES5, ifESNext, ifLint, ifProd, ifPreact, ifHot, ifTest } = env;
 
 const log = debug('build');
 
@@ -326,6 +326,21 @@ module.exports = {
           },
         ]),
       },
+
+      ifTest({
+        enforce: 'post',
+        test: /\.tsx?$/,
+        include: path.resolve(__dirname, 'src'),
+        exclude: excludedPatterns,
+        use: [
+          {
+            loader: 'istanbul-instrumenter-loader',
+            query: {
+              esModules: true,
+            },
+          },
+        ],
+      }),
 
       // SVG Icons
       {

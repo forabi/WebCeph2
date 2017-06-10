@@ -17,15 +17,14 @@ exports.isES5 = process.env.ES5 === undefined || Boolean(process.env.ES5);
 exports.isESNext = !exports.isES5;
 exports.shouldLint = process.env.LINT === undefined || Boolean(process.env.LINT);
 
-
 const createConditionalWithFallback = (
   condition,
   defaultFallback = undefined,
 ) => (p, fallback = defaultFallback) => {
-  if (typeof fallback === 'undefined' && Array.isArray(p)) {
-    fallback = [];
+  if (Array.isArray(p)) {
+    return condition ? compact(p) : fallback || [];
   }
-  return condition ? Array.isArray(p) ? compact(p) : p : fallback;
+  return condition ? p : fallback;
 };
 
 exports.ifProd = createConditionalWithFallback(exports.isProd);

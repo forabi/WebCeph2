@@ -1,9 +1,19 @@
 const compact = require('lodash/compact');
-const { ifCI } = require('./env');
+const b2s = require('browserslist-saucelabs');
 
-const coverageDir = process.env.COVERAGE_DIR || 'coverage';
+const { isCI, ifCI } = require('./env');
+
+const COVERAGE_DIR = process.env.COVERAGE_DIR || 'coverage';
+const TEST_REPORTS_DIR = process.env.TEST_REPORTS || 'reports';
 
 module.exports = (config) => {
+  if (isCI && (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY)) {
+    console.log(
+      'Make sure the SAUCE_USERNAME and '+
+      'SAUCE_ACCESS_KEY environment variables are set.',
+    );
+    process.exit(1);
+  }
   /* eslint-disable global-require */
   const webpackConfig = require('./webpack.config');
   webpackConfig.devtool = 'inline-source-map';
@@ -32,27 +42,28 @@ module.exports = (config) => {
       'coverage',
       'remap-coverage',
       ifCI('junit'),
+      ifCI('saucelabs'),
     ]),
     mochaReporter: {
       output: 'autowatch',
       showDiff: true,
     },
     junitReporter: {
-      outputFile: `${process.env.CIRCLE_TEST_REPORTS}/junit/test-results.xml`,
+      outputFile: `${TEST_REPORTS_DIR}/junit/test-results.xml`,
     },
     coverageReporter: {
       type: 'in-memory',
     },
     remapCoverageReporter: {
       'text-summary': null,
-      html: `${coverageDir}/html`,
-      json: `${coverageDir}/coverage.json`,
-      lcovonly: `${coverageDir}/coverage.lcov`,
+      html: `${COVERAGE_DIR}/html`,
+      json: `${COVERAGE_DIR}/coverage.json`,
+      lcovonly: `${COVERAGE_DIR}/coverage.lcov`,
     },
     port: 9876,
     colors: true,
     logLevel: config.LOG_ERROR,
-    browsers: ['ChromeHeadless'],
+    browsers: isCI ? b2s() : ['ChromeHeadless'],
     singleRun: false,
     concurrency: Infinity,
     webpack: webpackConfig,
@@ -61,6 +72,16 @@ module.exports = (config) => {
         chunks: false,
       },
       noInfo: true,
+    },
+    sauceLabs: {
+      testName: 'WebCeph',
+      recordScreenshots: true,
+      connectOptions: {
+        port: 5757,
+        logfile: 'sauce_connect.log',
+        tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
+      },
+      public: 'public',
     },
   });
 };
