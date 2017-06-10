@@ -18,8 +18,8 @@
     "stats": "NODE_ENV=production webpack --json > stats.json"
   },
   "lint-staged": {
-    "{.,{src,stories,test}/**}/*.{j,t}s{x,}|(!*.d.ts)": "prettier --write --single-quote --trailing-comma all",
-    "{.,{src,stories,test}/**}/**/*.ts{,x}|(!*.d.ts)": "tslint",
+    "{.,{src,stories,test}/**}/*.{j,t}s{x,}": "prettier --write --single-quote --trailing-comma all",
+    "{.,{src,stories,test}/**}/**/*.ts{,x}": "tslint",
     "{.,{src,stories,test}/**}/**/*.{s,}css": "stylelint"
   },
   "pre-commit": [
