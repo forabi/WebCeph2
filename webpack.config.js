@@ -41,7 +41,12 @@ const babelConfig = {
     ),
     ...ifESNext([
       ...ifProd([
-        ['babili', { removeConsole: true, removeDebugger: true, mangle: false }],
+        ['babili', {
+          removeConsole: true,
+          removeDebugger: true,
+          mangle: false,
+          simplify: false,
+        }],
         'react-optimize',
       ]),
       [
