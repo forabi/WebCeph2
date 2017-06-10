@@ -1,11 +1,11 @@
-WebCeph
+WebCeph [![Build Status](https://travis-ci.org/forabi/WebCeph2.svg?branch=master)](https://travis-ci.org/forabi/WebCeph2)
 ==============
+
+[![Browser Support](https://badges.herokuapp.com/sauce/forabi-webceph-machine)](https://travis-ci.org/forabi/WebCeph2)
 
 A web app for tracing and [analyzing cephalograms](https://en.wikipedia.org/wiki/Cephalometric_analysis) and photographs used in the planning of [orthodontic treatment](https://en.wikipedia.org/wiki/Orthodontics).
 
 [![WebCeph cephaometric image tracing demo](https://img.youtube.com/vi/EmNYULKKgLE/0.jpg)](https://www.youtube.com/watch?v=EmNYULKKgLE)
-
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/forabi-webceph-machine.svg)](https://saucelabs.com/u/forabi)
 
 ## Features
 ### Easy to use
@@ -31,6 +31,9 @@ Images and tracing data never leave your device. All measurements and interpreta
 
 ### Completely free of charge
 No payments, no expiration time, no hidden costs. There is no catch! I made the app to scratch my own itch and decided to share it in the hope that it will be useful.
+
+## Supported Browsers
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/forabi-webceph-machine.svg)](https://saucelabs.com/u/forabi-webceph-machine)
 
 ## Development
 WebCeph is open source and licensed under [the GNU Public License 3](https://www.gnu.org/licenses/gpl-3.0.en.html).
