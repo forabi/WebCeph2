@@ -1,4 +1,4 @@
-const compact = require('lodash/compact');
+const { compact, zipObject } = require('lodash');
 const b2s = require('browserslist-saucelabs');
 
 const { isCI, ifCI } = require('./env');
@@ -6,8 +6,13 @@ const { isCI, ifCI } = require('./env');
 const COVERAGE_DIR = process.env.COVERAGE_DIR || 'coverage';
 const TEST_REPORTS_DIR = process.env.TEST_REPORTS || 'reports';
 
-const customLaunchers = b2s().map(c => Object.assign({ base: 'SauceLabs' }, c));
-const sauceBrowsers = customLaunchers.map(c => `${c.browserName} ${c.version} on ${c.platform}`);
+const sauceBrowsers = b2s().map(c => Object.assign({ base: 'SauceLabs' }, c));
+const sauceBrowserNames = sauceBrowsers.map(c => `${c.browserName} ${c.version} on ${c.platform}`);
+
+const customLaunchers = zipObject(
+  sauceBrowserNames,
+  sauceBrowsers,
+);
 
 module.exports = (config) => {
   if (isCI && (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY)) {
@@ -17,8 +22,7 @@ module.exports = (config) => {
     );
     process.exit(1);
   }
-  const browsers = isCI ? sauceBrowsers : ['ChromeHeadless'];
-  console.log(browsers);
+  const browsers = isCI ? sauceBrowserNames : ['ChromeHeadless'];
   /* eslint-disable global-require */
   const webpackConfig = require('./webpack.config');
   webpackConfig.devtool = 'inline-source-map';
