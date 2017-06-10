@@ -5,6 +5,7 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
+    "pretest": "cd ./node_modules/browserslist-saucelabs && node ./getdata.js",
     "test": "NODE_ENV=test karma start --single-run",
     "test:watch": "NODE_ENV=test karma start --watch --no-single-run",
     "styleguide": "styleguidist server --config styleguide.config.js",
