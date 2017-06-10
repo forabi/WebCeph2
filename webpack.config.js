@@ -9,6 +9,7 @@ const PreloadWebpackPlugin = require('preload-webpack-plugin');
 
 const autoprefixer = require('autoprefixer');
 const normalize = require('postcss-normalize');
+const stylelint = require('stylelint');
 
 const { compact } = require('lodash');
 const path = require('path');
@@ -211,6 +212,21 @@ module.exports = {
 
   module: {
     rules: compact([
+      // Stylelint
+      ifLint(ifProd({
+        test: /\.css$/,
+        exclude: /node_modules/,
+        enforce: 'pre',
+        use: {
+          loader: 'postcss-loader',
+          options: {
+            plugins: [
+              stylelint,
+            ],
+          },
+        },
+      })),
+
       // CSS Modules
       {
         test: /\.module\.css$/,
