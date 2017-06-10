@@ -21,7 +21,7 @@
     "lighthouse": "lighthouse https://localhost:5000/ --skip-autolaunch --save-assets --save--artifacts --output=json --output=html --output-path=./lighthouse-report.json",
     "audit": "npm-run-all -s serve lighthouse kill-server",
     "webpack": "run-p -l webpack:prod webpack:stats",
-    "build": "npm-run-all -l -s webpack audit"
+    "build": "npm-run-all -l -s webpack"
   },
   "lint-staged": {
     "**/*.{j,t}s{x,}": "prettier --write --single-quote --trailing-comma all",
