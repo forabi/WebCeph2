@@ -222,8 +222,8 @@ module.exports = {
   performance: env.isProd
     ? {
         hints: 'error',
-        maxEntrypointSize: 700000,
-        maxAssetSize: 1000000,
+        maxEntrypointSize: 30000,
+        maxAssetSize: 50000,
       }
     : false,
 
