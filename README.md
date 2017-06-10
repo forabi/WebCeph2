@@ -5,7 +5,7 @@ A web app for tracing and [analyzing cephalograms](https://en.wikipedia.org/wiki
 
 [![WebCeph cephaometric image tracing demo](https://img.youtube.com/vi/EmNYULKKgLE/0.jpg)](https://www.youtube.com/watch?v=EmNYULKKgLE)
 
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/forabi.svg)](https://saucelabs.com/u/forabi)
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/forabi-webceph-machine.svg)](https://saucelabs.com/u/forabi)
 
 ## Features
 ### Easy to use

@@ -37,6 +37,7 @@ module.exports = (config) => {
       'karma-junit-reporter',
       'karma-coverage',
       'karma-remap-coverage',
+      'karma-sauce-launcher',
       'karma-webpack',
     ],
     reporters: compact([
