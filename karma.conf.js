@@ -6,6 +6,8 @@ const { isCI, ifCI } = require('./env');
 const COVERAGE_DIR = process.env.COVERAGE_DIR || 'coverage';
 const TEST_REPORTS_DIR = process.env.TEST_REPORTS || 'reports';
 
+const sauceLaunchers = b2s().map(c => Object.assign({ base: 'SauceLabs' }, c));
+
 module.exports = (config) => {
   if (isCI && (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY)) {
     console.log(
@@ -63,7 +65,7 @@ module.exports = (config) => {
     port: 9876,
     colors: true,
     logLevel: config.LOG_ERROR,
-    browsers: isCI ? b2s() : ['ChromeHeadless'],
+    browsers: isCI ? sauceLaunchers : ['ChromeHeadless'],
     singleRun: false,
     concurrency: Infinity,
     webpack: webpackConfig,
