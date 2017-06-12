@@ -26,10 +26,7 @@ module.exports = config => {
   const webpackConfig = require('./webpack.config');
   webpackConfig.entry = () => ({});
   config.set({
-    frameworks: [
-      'mocha',
-      'source-map-support'
-    ],
+    frameworks: ['mocha', 'source-map-support'],
     files: ['test/index.js'],
     preprocessors: {
       'test/index.js': ['webpack'],
