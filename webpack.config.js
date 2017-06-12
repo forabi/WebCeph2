@@ -397,7 +397,6 @@ module.exports = {
             collapseWhitespace: true,
           }
         : false,
-      excludeAssets: [/\.rtl/i],
     }),
 
     new PreloadWebpackPlugin({
