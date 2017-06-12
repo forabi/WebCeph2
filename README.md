@@ -1,4 +1,4 @@
-WebCeph [![Build Status](https://travis-ci.org/forabi/WebCeph2.svg?branch=master)](https://travis-ci.org/forabi/WebCeph2)
+WebCeph [![Coverage Status](https://coveralls.io/repos/github/forabi/WebCeph2/badge.svg?branch=master)](https://coveralls.io/github/forabi/WebCeph2?branch=master) [![Build Status](https://travis-ci.org/forabi/WebCeph2.svg?branch=master)](https://travis-ci.org/forabi/WebCeph2) 
 ==============
 
 [![Browser Support](https://badges.herokuapp.com/sauce/forabi-webceph-machine)](https://travis-ci.org/forabi/WebCeph2)

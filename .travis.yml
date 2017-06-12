@@ -5,6 +5,9 @@ node_js:
 
 cache: yarn
 
+after_success:
+  - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+
 before_script:
   - yarn update-browsers
 
