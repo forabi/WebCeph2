@@ -59,6 +59,14 @@ module.exports = config => {
     },
     coverageReporter: {
       type: 'in-memory',
+      check: {
+        global: {
+          lines: 85,
+          statements: 85,
+          functions: 85,
+          branches: 85,
+        },
+      },
     },
     remapCoverageReporter: {
       'text-summary': null,
