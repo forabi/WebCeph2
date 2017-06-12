@@ -24,10 +24,12 @@ module.exports = config => {
   const browsers = isCI ? sauceBrowserNames : ['ChromeHeadless'];
   /* eslint-disable global-require */
   const webpackConfig = require('./webpack.config');
-  webpackConfig.devtool = 'inline-source-map';
   webpackConfig.entry = () => ({});
   config.set({
-    frameworks: ['mocha', 'source-map-support'],
+    frameworks: [
+      'mocha',
+      'source-map-support'
+    ],
     files: ['test/index.js'],
     preprocessors: {
       'test/index.js': ['webpack'],
