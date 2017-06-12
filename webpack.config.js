@@ -330,6 +330,7 @@ module.exports = {
         ]),
       },
 
+      // Code Coverage
       ifTest({
         enforce: 'post',
         test: /\.tsx?$/,
