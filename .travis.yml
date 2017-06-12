@@ -13,7 +13,7 @@ before_script:
 script:
   - yarn test
   - cat ./coverage/coverage.lcov | ./node_modules/coveralls/bin/coveralls.js
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - ./cc-test-reporter after-build --exit-code 0
 
 before_deploy:
   - yarn build
