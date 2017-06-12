@@ -1,4 +1,4 @@
-WebCeph [![Build Status](https://travis-ci.org/forabi/WebCeph2.svg?branch=master)](https://travis-ci.org/forabi/WebCeph2) [![Coverage Status](https://coveralls.io/repos/github/forabi/WebCeph2/badge.svg?branch=master)](https://coveralls.io/github/forabi/WebCeph2?branch=master) [![Code Climate](https://codeclimate.com/github/forabi/WebCeph2/badges/gpa.svg)](https://codeclimate.com/github/forabi/WebCeph2)
+WebCeph [![Build Status](https://travis-ci.org/forabi/WebCeph2.svg?branch=master)](https://travis-ci.org/forabi/WebCeph2) [![Coverage Status](https://coveralls.io/repos/github/forabi/WebCeph2/badge.svg?branch=master)](https://coveralls.io/github/forabi/WebCeph2?branch=master)
 ==============
 
 [![Browser Support](https://badges.herokuapp.com/sauce/forabi-webceph-machine)](https://saucelabs.com/u/forabi-webceph-machine)
