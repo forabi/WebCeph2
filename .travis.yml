@@ -5,12 +5,15 @@ node_js:
 
 cache: yarn
 
+before_script:
+  - yarn update-browsers
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+
 script:
   - yarn test
   - cat ./coverage/coverage.lcov | ./node_modules/coveralls/bin/coveralls.js
-
-before_script:
-  - yarn update-browsers
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
 before_deploy:
   - yarn build
