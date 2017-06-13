@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Zoomable, Props as AllProps } from 'components/Zoomable/Zoomable';
 
-type Props = Pick<AllProps, 'minScale' | 'maxScale'> & React.HTMLAttributes<Element>;
+type Props = Pick<AllProps, 'minScale' | 'maxScale'> &
+  React.HTMLAttributes<Element>;
 type State = Pick<AllProps, 'scaleFactor' | 'originX' | 'originY'>;
 
 export { Props };
