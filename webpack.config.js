@@ -51,8 +51,8 @@ const excludedPatterns = compact([
 
 const babelConfig = {
   presets: compact([
-    ifES5(['es2015', { modules: false }], null),
-    ...ifESNext([
+    ...ifES5(['es2015', { modules: false }]),
+    ...ifESNext(compact([
       ...ifProd([
         [
           'babili',
@@ -76,7 +76,7 @@ const babelConfig = {
           useBuiltIns: true,
         },
       ],
-    ]),
+    ])),
     'react',
     'stage-3',
   ]),

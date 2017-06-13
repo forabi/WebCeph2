@@ -8,10 +8,10 @@ exports.isDev = exports.isDevelopment;
 exports.isProd = exports.isProduction;
 exports.isHot = Boolean(process.env.HOT);
 exports.isBrowser = !process && typeof window !== 'undefined';
-exports.isPreact = process.env.PREACT === undefined || Boolean(process.env.PREACT);
+exports.isPreact = !process.env.REACT;
 exports.isInferno = !exports.isPreact && Boolean(process.env.INFERNO);
 exports.isReact = !exports.isPreact && !exports.isInferno;
-exports.isES5 = process.env.ES5 === undefined || Boolean(process.env.ES5);
+exports.isES5 = Boolean(process.env.ES5);
 exports.isESNext = !exports.isES5;
 exports.shouldLint = process.env.LINT === undefined || Boolean(process.env.LINT);
 
