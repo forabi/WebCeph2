@@ -6,6 +6,14 @@ declare module 'lodash/zipObject' {
   export = zipObject;
 }
 
+declare module 'lodash/mapValues' {
+  const mapValues: <K, V, M>(
+    obj: Record<K, V>,
+    mapper: (v: V) => M,
+  ) => Record<K, M>;
+  export = mapValues;
+}
+
 declare module 'lodash/pick' {
   const pick: <T extends Record<string, any>, K extends keyof T>(
     obj: T,
