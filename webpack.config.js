@@ -52,31 +52,33 @@ const excludedPatterns = compact([
 const babelConfig = {
   presets: compact([
     ...ifES5(['es2015', { modules: false }]),
-    ...ifESNext(compact([
-      ...ifProd([
+    ...ifESNext(
+      compact([
+        ...ifProd([
+          [
+            'babili',
+            {
+              removeConsole: true,
+              removeDebugger: true,
+              mangle: false,
+              simplify: false,
+            },
+          ],
+          'react-optimize',
+        ]),
         [
-          'babili',
+          'env',
           {
-            removeConsole: true,
-            removeDebugger: true,
-            mangle: false,
-            simplify: false,
+            modules: false,
+            debug: env.isDev,
+            targets: {
+              browsers: pkg.browserslist,
+            },
+            useBuiltIns: true,
           },
         ],
-        'react-optimize',
       ]),
-      [
-        'env',
-        {
-          modules: false,
-          debug: env.isDev,
-          targets: {
-            browsers: pkg.browserslist,
-          },
-          useBuiltIns: true,
-        },
-      ],
-    ])),
+    ),
     'react',
     'stage-3',
   ]),
